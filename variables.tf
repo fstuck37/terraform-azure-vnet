@@ -23,6 +23,13 @@ variable "name-vars" {
   }
 }
 
+variable "default_deny_all" {
+  type        = bool
+  description = "Optional : Create base subnet security groups and deny all traffic"
+  default     = true
+}
+
+
 variable "vnet-name" {
   type        = string
   description = "Optional : Override the calculated VNET name."
