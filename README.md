@@ -57,7 +57,7 @@ variable "domain_name_servers" {
 }
 
 variable "tags" {
-  type = "map"
+  type = map(string)
   default = {
     dept = "Development"
     Billing = "12345"
