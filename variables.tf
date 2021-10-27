@@ -82,12 +82,7 @@ variable "next_hop_in_ip_address" {
     )
     error_message = "GatewaySubnet should not override the next hop IP address."
   }
-  default = {
-    web = "Internet"
-    app = "Internet"
-    db  = "Internet"
-    mgt = "Internet"
-  }
+  default = {  }
 }
 
 variable "service_endpoints" {
