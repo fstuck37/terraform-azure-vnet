@@ -81,14 +81,7 @@ variable "subnets" {
 
 variable "next_hop_in_ip_address" {
   type = map(string)
-  description = "Optional : Override the default gatway for specific subnets. The keys must match those in subnets and the value must either be Internet or a appliance (e.g. Load Balancer, Firewall) IP address as the next hop. Defaults to Internet. If utilized 'pub' and 'GatewaySubnet' should not be specified."
-  validation {
-    condition = (
-      !contains(keys(var.next_hop_in_ip_address),"GatewaySubnet") && 
-      !contains(keys(var.next_hop_in_ip_address),"pub")
-    )
-    error_message = "GatewaySubnet should not override the next hop IP address."
-  }
+  description = "Optional : Override the default gatway for specific subnets. The keys must match those in subnets and the value must either be Internet or a appliance (e.g. Load Balancer, Firewall) IP address as the next hop. Defaults to Internet. If utilized 'pub' and 'GatewaySubnet' will be ignored."
   default = {  }
 }
 
