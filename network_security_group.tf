@@ -7,7 +7,7 @@ resource "azurerm_network_security_group" "security_groups" {
 }
 
 resource "azurerm_network_security_rule" "lb-in-4095" {
-  for_each = { for k, v in var.subnets: k => v if k != "GatewaySubnet" && var.default_deny_all}
+  for_each = { for k, v in var.subnets: k => v if k != "GatewaySubnet" && k != "pub" && var.default_deny_all}
     name                        = "AllowAzureLoadBalancerInBound-TCP"
     priority                    = 4095
     direction                   = "Inbound"
@@ -22,7 +22,7 @@ resource "azurerm_network_security_rule" "lb-in-4095" {
 }
 
 resource "azurerm_network_security_rule" "DenyAllInBound" {
-  for_each = { for k, v in var.subnets: k => v if k != "GatewaySubnet" && var.default_deny_all}
+  for_each = { for k, v in var.subnets: k => v if k != "GatewaySubnet" && k != "pub" && var.default_deny_all}
     name                        = "Block All Ingress"
     priority                    = 4096
     direction                   = "Inbound"
