@@ -31,7 +31,7 @@ resource "azurerm_route" "defualt_routes" {
     next_hop_type          = each.value == "Internet" ? "Internet" : "VirtualAppliance"
     next_hop_in_ip_address = each.value == "Internet" ? null : each.value
 }
-
+/*
 resource "azurerm_route" "subnet_specific_routes" {
   for_each = { for k, v in local.subnet_specific_routes_add : v.name => v }
     name                   = each.value["name"]
@@ -41,3 +41,4 @@ resource "azurerm_route" "subnet_specific_routes" {
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = each.value["next_hop_in_ip_address"]
 }
+*/

@@ -28,6 +28,7 @@ locals {
     ])
   }
 
+/*
   subnet_specific_routes_add = flatten([
     for k, v in local.subnet_specific_routes : [
       for ii, c in v : {
@@ -39,5 +40,6 @@ locals {
     if k != var.public_subnet_name && length(keys(var.set_subnet_specific_next_hop_in_ip_address)) == length(keys(var.subnets))-1
     ] 
   ])
-  
+*/
+
 }
