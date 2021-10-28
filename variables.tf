@@ -184,7 +184,6 @@ variable "set_subnet_specific_next_hop_in_ip_address" {
 }
 */
 
-/*
 
 variable "set_subnet_specific_delegation" {
   type = map(object({
