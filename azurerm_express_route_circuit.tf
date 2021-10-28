@@ -46,7 +46,7 @@ resource "azurerm_virtual_network_gateway" "gwy" {
     sku                    = var.azurerm_virtual_network_gateway_sku
     ip_configuration {
       public_ip_address_id = azurerm_public_ip.gwyip[each.key].id
-      subnet_id            = azurerm_subnet.subnets["GatewaySubnet"].id
+      subnet_id            = azurerm_subnet.subnets[var.gatewaysubnet_subnet_name].id
     }
     tags                   = merge( var.tags, local.resource-tags["azurerm_virtual_network_gateway"] )
 }

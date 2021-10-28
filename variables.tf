@@ -79,8 +79,6 @@ variable "gatewaysubnet_subnet_name" {
   default     = "GatewaySubnet"
 }
 
-
-
 variable "subnets" {
   type = map(list(string))
   description = "Optional : Keys are used for subnet names and values are the subnets for the various layers. 'pub' & 'GatewaySubnet' are the only special names used for the public and gateway subnets howvever they can be overridden."
@@ -178,16 +176,9 @@ variable "network_watcher_resource_group_name" {
   default = ""
 }
 
-
 variable "set_subnet_specific_next_hop_in_ip_address" {
   type = map(string)
   description = "Optional : Sends routes for various subnets within the VNET via a security appliance such as a firewall. The keys must match those in subnets and the value must either be the appliance/LB IP address of the next hop. If utilized 'pub' should not be specified."
-  validation {
-    condition = (
-      !contains(keys(var.set_subnet_specific_next_hop_in_ip_address),"pub")
-    )
-    error_message = "GatewaySubnet should not override the next hop IP address."
-  }
   default = {}
 }
 
