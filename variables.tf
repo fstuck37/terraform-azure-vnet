@@ -183,3 +183,16 @@ variable "set_subnet_specific_next_hop_in_ip_address" {
   default = {}
 }
 */
+
+/*
+
+variable "set_subnet_specific_delegation" {
+  type = map(object({
+    name    = string
+    actions = list(string)
+  }))
+  description = "Optional :"
+  default = {}
+}
+
+
