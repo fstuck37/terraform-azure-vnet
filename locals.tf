@@ -19,7 +19,7 @@ locals {
   
   network_security_group_names = {
     for k, v in var.subnets: k => azurerm_network_security_group.security_groups[k].name
-    if k != "GatewaySubnet"
+    if k != var.gatewaysubnet_subnet_name
   }
 
   subnet_specific_routes = {
@@ -36,7 +36,7 @@ locals {
         cidr   = c
         next_hop_in_ip_address = var.set_subnet_specific_next_hop_in_ip_address[k]
       }
-    if k != "pub" && length(keys(var.set_subnet_specific_next_hop_in_ip_address)) == length(keys(var.subnets))-1
+    if k != var.public_subnet_name && length(keys(var.set_subnet_specific_next_hop_in_ip_address)) == length(keys(var.subnets))-1
     ] 
   ])
   

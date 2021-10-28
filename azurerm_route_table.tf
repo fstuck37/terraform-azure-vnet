@@ -14,16 +14,16 @@ resource "azurerm_subnet_route_table_association" "router" {
 }
 
 resource "azurerm_route" "pubrt-default" {
-  for_each = { for k, v in var.subnets: k => v if k == "pub" }
+  for_each = { for k, v in var.subnets: k => v if k == var.public_subnet_name }
     name                = "DefaultGateway"
     resource_group_name = azurerm_resource_group.rg-vnet.name
-    route_table_name    = azurerm_route_table.router["pub"].name
+    route_table_name    = azurerm_route_table.router[var.public_subnet_name].name
     address_prefix      = "0.0.0.0/0"
     next_hop_type       = "Internet"
 }
 
 resource "azurerm_route" "defualt_routes" {
-  for_each = { for k, v in var.next_hop_in_ip_address: k => v if k != "pub" && k != "GatewaySubnet" }
+  for_each = { for k, v in var.next_hop_in_ip_address: k => v if k != var.public_subnet_name && k != var.gatewaysubnet_subnet_name }
     name                   = "DefaultGateway"
     resource_group_name    = azurerm_resource_group.rg-vnet.name
     route_table_name       = azurerm_route_table.router[each.key].name
