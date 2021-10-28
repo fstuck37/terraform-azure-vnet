@@ -5,4 +5,12 @@ resource "azurerm_subnet" "subnets" {
     virtual_network_name = azurerm_virtual_network.vnet.name
     address_prefixes     = each.value
     service_endpoints    = each.key == var.gatewaysubnet_subnet_name || each.key == var.public_subnet_name ? null : var.service_endpoints
+
+    dynamic "delegation" {
+      for_each = var.set_subnet_specific_delegation
+        content {
+          name = delegation.value["name"]
+          actions = delegation.value["actions"]
+        }
+    }
 }
