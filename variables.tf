@@ -68,14 +68,14 @@ variable "domain_name_servers" {
 
 
 variable "public_subnet_name" {
-  type        = list(string)
-  description = "Optional : Override the name of the public subnet"
+  type        = string
+  description = "Optional : Override the name of the public subnet. Defaults to pub."
   default     = "pub"
 }
 
 variable "gatewaysubnet_subnet_name" {
-  type        = list(string)
-  description = "Optional : Override the name of the GatewaySubnet subnet"
+  type        = string
+  description = "Optional : Override the name of the GatewaySubnet subnet. Defaults to GatewaySubnet."
   default     = "GatewaySubnet"
 }
 
