@@ -91,6 +91,17 @@ Argument Reference
    * **domain_name_servers** - Optional : List of DNS Servers for DHCP Options
    * **default_deny_all** - Optional : Boolean to add default deny statements to security groups. Defaults to true.
    * **subnets** - Optional : Keys are used for subnet names and values are the subnets for the various layers. 'pub' & 'GatewaySubnet' are the only special names used for the public and gateway subnets
+   * **set_subnet_specific_delegation** - Optional : service_delication see https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet#service_delegation for details.
+   ```
+   variable "set_subnet_specific_delegation" {
+     default = {
+       anf = {
+         name    = "Microsoft.Netapp/volumes"
+         actions = []
+       }
+     }
+   }
+   ```
    * **next_hop_in_ip_address** - Optional : Override the default gatway for specific subnets. The keys must match those in subnets and the value must either be Internet or a appliance (e.g. Load Balancer, Firewall) IP address as the next hop. Defaults to Internet. If utilized 'pub' and 'GatewaySubnet' will be ignored.
    ```
    variable "next_hop_in_ip_address" {

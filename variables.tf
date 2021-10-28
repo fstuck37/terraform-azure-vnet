@@ -92,6 +92,15 @@ variable "subnets" {
   }
 }
 
+variable "set_subnet_specific_delegation" {
+  type = map(object({
+    name    = string
+    actions = list(string)
+  }))
+  description = "Optional : service_delication see https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet#service_delegation for details."
+  default = {}
+}
+
 variable "next_hop_in_ip_address" {
   type = map(string)
   description = "Optional : Override the default gatway for specific subnets. The keys must match those in subnets and the value must either be Internet or a appliance (e.g. Load Balancer, Firewall) IP address as the next hop. Defaults to Internet. If utilized pub and GatewaySubnet  will be ignored."
@@ -185,13 +194,6 @@ variable "set_subnet_specific_next_hop_in_ip_address" {
 */
 
 
-variable "set_subnet_specific_delegation" {
-  type = map(object({
-    name    = string
-    actions = list(string)
-  }))
-  description = "Optional :"
-  default = {}
-}
+
 
 
