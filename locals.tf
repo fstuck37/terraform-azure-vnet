@@ -15,11 +15,12 @@ locals {
 
   route_table_ids = {
     for k,s in var.subnets : k => azurerm_route_table.router[k].id
+      if !contains(keys(var.set_subnet_specific_delegation), k)
   }
   
   network_security_group_names = {
     for k, v in var.subnets: k => azurerm_network_security_group.security_groups[k].name
-    if k != var.gatewaysubnet_subnet_name
+    if k != var.gatewaysubnet_subnet_name && !contains(keys(var.set_subnet_specific_delegation), k)
   }
 
   subnet_specific_routes = {
