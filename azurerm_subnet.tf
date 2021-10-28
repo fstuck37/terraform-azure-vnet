@@ -7,10 +7,15 @@ resource "azurerm_subnet" "subnets" {
     service_endpoints    = each.key == var.gatewaysubnet_subnet_name || each.key == var.public_subnet_name ? null : var.service_endpoints
 
     dynamic "delegation" {
-      for_each = var.set_subnet_specific_delegation
+      for_each = { for k, v in var.set_subnet_specific_delegation : k => v
+          if k = each.key
+      }
         content {
-          name = delegation.value["name"]
-          actions = delegation.value["actions"]
+          name = "delegation"
+          service_delegation {
+            name = delegation.value["name"]
+            actions = delegation.value["actions"]
+          }
         }
     }
 }
