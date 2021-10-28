@@ -66,9 +66,24 @@ variable "domain_name_servers" {
   default     = []
 }
 
+
+variable "public_subnet_name" {
+  type        = list(string)
+  description = "Optional : Override the name of the public subnet"
+  default     = "pub"
+}
+
+variable "gatewaysubnet_subnet_name" {
+  type        = list(string)
+  description = "Optional : Override the name of the GatewaySubnet subnet"
+  default     = "GatewaySubnet"
+}
+
+
+
 variable "subnets" {
   type = map(list(string))
-  description = "Optional : Keys are used for subnet names and values are the subnets for the various layers. 'pub' & 'GatewaySubnet' are the only special names used for the public and gateway subnets"
+  description = "Optional : Keys are used for subnet names and values are the subnets for the various layers. 'pub' & 'GatewaySubnet' are the only special names used for the public and gateway subnets howvever they can be overridden."
   default = {
     GatewaySubnet = ["10.0.0.0/27"]
     pub           = ["10.0.128.0/25"]
@@ -81,7 +96,7 @@ variable "subnets" {
 
 variable "next_hop_in_ip_address" {
   type = map(string)
-  description = "Optional : Override the default gatway for specific subnets. The keys must match those in subnets and the value must either be Internet or a appliance (e.g. Load Balancer, Firewall) IP address as the next hop. Defaults to Internet. If utilized 'pub' and 'GatewaySubnet' will be ignored."
+  description = "Optional : Override the default gatway for specific subnets. The keys must match those in subnets and the value must either be Internet or a appliance (e.g. Load Balancer, Firewall) IP address as the next hop. Defaults to Internet. If utilized pub and GatewaySubnet  will be ignored."
   default = {  }
 }
 
