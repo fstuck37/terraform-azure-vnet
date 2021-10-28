@@ -1,6 +1,8 @@
 /* Public Subnet Routing Table */
 resource "azurerm_route_table" "router" {
-  for_each = var.subnets
+  for_each = { for k, s in var.subnets: k=>s
+    if !contains(keys(var.set_subnet_specific_delegation), k)
+  }
     name                = var.vnet-name == "" ? "${var.name-vars["account"]}-${var.region}-${var.name-vars["name"]}-${each.key}rt" : "${var.vnet-name}-${each.key}rt"
     location            = var.region
     resource_group_name = azurerm_resource_group.rg-vnet.name
@@ -8,7 +10,9 @@ resource "azurerm_route_table" "router" {
 }
 
 resource "azurerm_subnet_route_table_association" "router" {
-  for_each = var.subnets
+  for_each = { for k, s in var.subnets: k=>s
+    if !contains(keys(var.set_subnet_specific_delegation), k)
+  }
     subnet_id      = azurerm_subnet.subnets[each.key].id
     route_table_id = azurerm_route_table.router[each.key].id
 }
@@ -23,7 +27,7 @@ resource "azurerm_route" "pubrt-default" {
 }
 
 resource "azurerm_route" "defualt_routes" {
-  for_each = { for k, v in var.next_hop_in_ip_address: k => v if k != var.public_subnet_name && k != var.gatewaysubnet_subnet_name }
+  for_each = { for k, v in var.next_hop_in_ip_address: k => v if k != var.public_subnet_name && k != var.gatewaysubnet_subnet_name && !contains(keys(var.set_subnet_specific_delegation), k) }
     name                   = "DefaultGateway"
     resource_group_name    = azurerm_resource_group.rg-vnet.name
     route_table_name       = azurerm_route_table.router[each.key].name
@@ -31,9 +35,10 @@ resource "azurerm_route" "defualt_routes" {
     next_hop_type          = each.value == "Internet" ? "Internet" : "VirtualAppliance"
     next_hop_in_ip_address = each.value == "Internet" ? null : each.value
 }
+
 /*
 resource "azurerm_route" "subnet_specific_routes" {
-  for_each = { for k, v in local.subnet_specific_routes_add : v.name => v }
+  for_each = { for k, v in local.subnet_specific_routes_add : v.name => v}
     name                   = each.value["name"]
     resource_group_name    = azurerm_resource_group.rg-vnet.name
     route_table_name       = azurerm_route_table.router[each.value.key].name
