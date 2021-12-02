@@ -185,6 +185,12 @@ variable "network_watcher_resource_group_name" {
   default = ""
 }
 
+variable "disable_custom_route_tables" {
+  type = bool
+  description = "Optional : Gives the ability to disable the deployment of custom routing tables. Defaults to false."
+  default = false
+}
+
 /*
 variable "set_subnet_specific_next_hop_in_ip_address" {
   type = map(string)

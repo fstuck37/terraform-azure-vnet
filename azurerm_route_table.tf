@@ -1,7 +1,7 @@
 /* Public Subnet Routing Table */
 resource "azurerm_route_table" "router" {
   for_each = { for k, s in var.subnets: k=>s
-    if !contains(keys(var.set_subnet_specific_delegation), k)
+    if !contains(keys(var.set_subnet_specific_delegation), k) && !var.disable_custom_route_tables
   }
     name                = var.vnet-name == "" ? "${var.name-vars["account"]}-${var.region}-${var.name-vars["name"]}-${each.key}rt" : "${var.vnet-name}-${each.key}rt"
     location            = var.region
@@ -11,14 +11,16 @@ resource "azurerm_route_table" "router" {
 
 resource "azurerm_subnet_route_table_association" "router" {
   for_each = { for k, s in var.subnets: k=>s
-    if !contains(keys(var.set_subnet_specific_delegation), k)
+    if !contains(keys(var.set_subnet_specific_delegation), k) && !var.disable_custom_route_tables
   }
     subnet_id      = azurerm_subnet.subnets[each.key].id
     route_table_id = azurerm_route_table.router[each.key].id
 }
 
 resource "azurerm_route" "pubrt-default" {
-  for_each = { for k, v in var.subnets: k => v if k == var.public_subnet_name }
+  for_each = { for k, v in var.subnets: k => v if k == var.public_subnet_name 
+    if !var.disable_custom_route_tables
+  }
     name                = "DefaultGateway"
     resource_group_name = azurerm_resource_group.rg-vnet.name
     route_table_name    = azurerm_route_table.router[var.public_subnet_name].name
@@ -27,7 +29,7 @@ resource "azurerm_route" "pubrt-default" {
 }
 
 resource "azurerm_route" "defualt_routes" {
-  for_each = { for k, v in var.next_hop_in_ip_address: k => v if k != var.public_subnet_name && k != var.gatewaysubnet_subnet_name && !contains(keys(var.set_subnet_specific_delegation), k) }
+  for_each = { for k, v in var.next_hop_in_ip_address: k => v if k != var.public_subnet_name && k != var.gatewaysubnet_subnet_name && !contains(keys(var.set_subnet_specific_delegation), k) && !var.disable_custom_route_tables }
     name                   = "DefaultGateway"
     resource_group_name    = azurerm_resource_group.rg-vnet.name
     route_table_name       = azurerm_route_table.router[each.key].name
@@ -38,7 +40,9 @@ resource "azurerm_route" "defualt_routes" {
 
 /*
 resource "azurerm_route" "subnet_specific_routes" {
-  for_each = { for k, v in local.subnet_specific_routes_add : v.name => v}
+  for_each = { for k, v in local.subnet_specific_routes_add : v.name => v
+    if !var.disable_custom_route_tables
+  }
     name                   = each.value["name"]
     resource_group_name    = azurerm_resource_group.rg-vnet.name
     route_table_name       = azurerm_route_table.router[each.value.key].name
