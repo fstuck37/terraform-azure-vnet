@@ -116,6 +116,7 @@ Argument Reference
    * **service_endpoints** - (Optional) The list of Service endpoints to associate with the subnets. Possible values include: Microsoft.AzureActiveDirectory, Microsoft.AzureCosmosDB, Microsoft.ContainerRegistry, Microsoft.EventHub, Microsoft.KeyVault, Microsoft.ServiceBus, Microsoft.Sql, Microsoft.Storage and Microsoft.Web.
    * **log-storage-account** - Required: Name or ID of the storage account in which to save the flow logs.
    * **log-retention** - Optional: Number of days to retain logs, default is 365
+   * **disable_custom_route_tables** - Optional : Gives the ability to disable the deployment of custom routing tables. Defaults to false.
    * **peer_vnet_id** - Optional: Map of maps to manage virtual network peering which links VNETs together.
    ```
    variable "peer_vnet_id" {
