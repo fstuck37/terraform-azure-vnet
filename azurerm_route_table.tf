@@ -18,8 +18,7 @@ resource "azurerm_subnet_route_table_association" "router" {
 }
 
 resource "azurerm_route" "pubrt-default" {
-  for_each = { for k, v in var.subnets: k => v if k == var.public_subnet_name 
-    if !var.disable_custom_route_tables
+  for_each = { for k, v in var.subnets: k => v if k == var.public_subnet_name && !var.disable_custom_route_tables
   }
     name                = "DefaultGateway"
     resource_group_name = azurerm_resource_group.rg-vnet.name
