@@ -6,6 +6,7 @@ resource "azurerm_network_watcher_flow_log" "flow-log" {
     network_security_group_id = azurerm_network_security_group.security_groups[each.key].id
     storage_account_id        = var.log-storage-account
     enabled                   = true
+    location                  = var.region
     tags                      = merge( var.tags, local.resource-tags["azurerm_network_watcher_flow_log"] )
     retention_policy {
       enabled = true
