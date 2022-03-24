@@ -12,7 +12,7 @@ resource "azurerm_network_security_rule" "lb-in-4095" {
     priority                    = 4095
     direction                   = "Inbound"
     access                      = "Allow"
-    protocol                    = "tcp"
+    protocol                    = "Tcp"
     source_address_prefix       = "AzureLoadBalancer"
     source_port_range           = "*"
     destination_address_prefix  = azurerm_subnet.subnets[each.key].address_prefix

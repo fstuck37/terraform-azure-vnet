@@ -1,5 +1,6 @@
 resource "azurerm_network_watcher_flow_log" "flow-log" {
   for_each = { for k, v in var.subnets: k => v if k != var.gatewaysubnet_subnet_name && var.log-storage-account != "" && var.network_watcher_name != "" && var.network_watcher_resource_group_name !="" && !contains(keys(var.set_subnet_specific_delegation), k) }
+    name                      = var.network_watcher_name
     network_watcher_name      = var.network_watcher_name
     resource_group_name       = var.network_watcher_resource_group_name
     network_security_group_id = azurerm_network_security_group.security_groups[each.key].id
