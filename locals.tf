@@ -6,7 +6,7 @@ locals {
 
   subnets = {
     for name in keys(var.subnets) : name => {
-      address_prefix   = azurerm_subnet.subnets[name].address_prefix
+/*      address_prefix   = azurerm_subnet.subnets[name].address_prefix */
       address_prefixes = azurerm_subnet.subnets[name].address_prefixes
       id               = azurerm_subnet.subnets[name].id
       name             = azurerm_subnet.subnets[name].name
@@ -17,7 +17,7 @@ locals {
     for k,s in var.subnets : k => azurerm_route_table.router[k].id
       if !contains(keys(var.set_subnet_specific_delegation), k) && !var.disable_custom_route_tables
   }
-  
+
   network_security_group_names = {
     for k, v in var.subnets: k => azurerm_network_security_group.security_groups[k].name
     if k != var.gatewaysubnet_subnet_name && !contains(keys(var.set_subnet_specific_delegation), k)
@@ -39,7 +39,7 @@ locals {
         next_hop_in_ip_address = var.set_subnet_specific_next_hop_in_ip_address[k]
       }
     if k != var.public_subnet_name && length(keys(var.set_subnet_specific_next_hop_in_ip_address)) == length(keys(var.subnets))-1
-    ] 
+    ]
   ])
 */
 
